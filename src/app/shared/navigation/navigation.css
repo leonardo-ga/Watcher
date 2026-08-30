@@ -1,0 +1,144 @@
+:host {
+    display: block;
+}
+
+.navigation {
+    align-items: center;
+    backdrop-filter: blur(16px);
+    background: color-mix(in srgb, #f7f6f2 88%, transparent);
+    border-bottom: 1px solid #dedcd4;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    height: 82px;
+    padding: 0 clamp(1.25rem, 4vw, 4.5rem);
+    position: relative;
+    z-index: 10;
+}
+
+.brand {
+    align-items: center;
+    color: #20201d;
+    display: inline-flex;
+    gap: .6rem;
+    justify-self: start;
+    text-decoration: none;
+}
+
+.brand-mark {
+    align-items: center;
+    background: #20201d;
+    border-radius: 50%;
+    display: inline-flex;
+    height: 20px;
+    justify-content: center;
+    position: relative;
+    width: 20px;
+}
+
+.brand-mark:before,
+.brand-mark:after {
+    background: #20201d;
+    border-radius: 2px;
+    content: '';
+    height: 5px;
+    left: 7px;
+    position: absolute;
+    width: 6px;
+}
+
+.brand-mark:before {
+    top: -3px;
+}
+
+.brand-mark:after {
+    bottom: -3px;
+}
+
+.brand-mark i {
+    border: 1px solid #dfff4f;
+    border-radius: 50%;
+    height: 9px;
+    position: relative;
+    width: 9px;
+}
+
+.brand-mark i:after {
+    background: #dfff4f;
+    content: '';
+    height: 3px;
+    left: 4px;
+    position: absolute;
+    top: 1px;
+    transform: rotate(32deg);
+    transform-origin: bottom;
+    width: 1px;
+}
+
+.brand-name {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: -.1em;
+}
+
+.brand-name>span {
+    color: #849c20;
+}
+
+nav {
+    background: #eae8e1;
+    border: 1px solid #dedcd4;
+    border-radius: 99px;
+    display: flex;
+    gap: .15rem;
+    padding: .25rem;
+}
+
+nav a {
+    border-radius: 99px;
+    color: #7c7972;
+    font-size: .92rem;
+    letter-spacing: .01em;
+    padding: .5rem .88rem;
+    text-decoration: none;
+    transition: background .2s ease, box-shadow .2s ease, color .2s ease;
+}
+
+nav a:hover {
+    color: #22221f;
+}
+
+nav a.active {
+    background: #fdfcf9;
+    box-shadow: 0 1px 4px #4e4d4217;
+    color: #22221f;
+}
+
+.edition {
+    color: #8c8981;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: .57rem;
+    justify-self: end;
+    letter-spacing: .12em;
+}
+
+@media (max-width: 620px) {
+    .navigation {
+        grid-template-columns: 1fr auto;
+        height: 68px;
+    }
+
+    .edition {
+        display: none;
+    }
+
+    .brand-mark {
+        height: 18px;
+        width: 18px;
+    }
+
+    nav a {
+        font-size: .8rem;
+        padding: .44rem .65rem;
+    }
+}
