@@ -1,1 +1,274 @@
-<p>watch-catalogue works!</p>
+<header class="catalogue-header">
+    <p class="eyebrow"><span></span> The collection</p>
+    <div class="heading-row">
+        <h1>Watches, <em>considered.</em></h1>
+        <p>Explore timekeepers with a point of view. Filter by the details that matter to you.</p>
+    </div>
+</header>
+
+<section class="catalogue" aria-label="Watch catalogue">
+    <aside class="filters" aria-label="Filter watches">
+        <div class="filter-heading">
+            <span>Refine</span>
+            @if (activeFilters().length) {
+            <button type="button" class="clear-filters-btn" (click)="clearFilters()">Clear all ({{
+                activeFilters().length }})</button>
+            }
+        </div>
+
+        <!-- Filter: Style / Category -->
+        <div class="filter-group">
+            <div class="group-header">
+                <span class="group-title">Style</span>
+                @if (selectedTypes().length) {
+                <span class="selection-count">{{ selectedTypes().length }} selected</span>
+                }
+            </div>
+            <div class="chip-group" role="group" aria-label="Filter by style">
+                <button type="button" class="filter-chip" [class.active]="isTypeSelected('All')"
+                    (click)="toggleType('All')">
+                    <span class="chip-label">All styles</span>
+                    <span class="chip-count">{{ watches.length }}</span>
+                </button>
+                @for (option of typeOptions(); track option.value) {
+                <button type="button" class="filter-chip" [class.active]="isTypeSelected(option.value)"
+                    (click)="toggleType(option.value)">
+                    <span class="chip-label">{{ option.label }}</span>
+                    <span class="chip-count">{{ option.count }}</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <!-- Filter: Brand -->
+        <div class="filter-group">
+            <div class="group-header">
+                <span class="group-title">Brand</span>
+                @if (selectedBrands().length) {
+                <span class="selection-count">{{ selectedBrands().length }} selected</span>
+                }
+            </div>
+            <div class="chip-group" role="group" aria-label="Filter by brand">
+                <button type="button" class="filter-chip" [class.active]="isBrandSelected('All')"
+                    (click)="toggleBrand('All')">
+                    <span class="chip-label">All brands</span>
+                    <span class="chip-count">{{ watches.length }}</span>
+                </button>
+                @for (option of brandOptions(); track option.value) {
+                <button type="button" class="filter-chip" [class.active]="isBrandSelected(option.value)"
+                    (click)="toggleBrand(option.value)">
+                    <span class="chip-label">{{ option.label }}</span>
+                    <span class="chip-count">{{ option.count }}</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <!-- Filter: Movement -->
+        <div class="filter-group">
+            <div class="group-header">
+                <span class="group-title">Movement</span>
+                @if (selectedMovements().length) {
+                <span class="selection-count">{{ selectedMovements().length }} selected</span>
+                }
+            </div>
+            <div class="chip-group" role="group" aria-label="Filter by movement">
+                <button type="button" class="filter-chip" [class.active]="isMovementSelected('All')"
+                    (click)="toggleMovement('All')">
+                    <span class="chip-label">All movements</span>
+                    <span class="chip-count">{{ watches.length }}</span>
+                </button>
+                @for (option of movementOptions(); track option.value) {
+                <button type="button" class="filter-chip" [class.active]="isMovementSelected(option.value)"
+                    (click)="toggleMovement(option.value)">
+                    <span class="chip-label">{{ option.label }}</span>
+                    <span class="chip-count">{{ option.count }}</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <!-- Filter: Case Diameter -->
+        <div class="filter-group">
+            <div class="group-header">
+                <span class="group-title">Case Diameter</span>
+                @if (selectedSizes().length) {
+                <span class="selection-count">{{ selectedSizes().length }} selected</span>
+                }
+            </div>
+            <div class="chip-group" role="group" aria-label="Filter by case diameter">
+                <button type="button" class="filter-chip" [class.active]="isSizeSelected('All')"
+                    (click)="toggleSize('All')">
+                    <span class="chip-label">All sizes</span>
+                    <span class="chip-count">{{ watches.length }}</span>
+                </button>
+                @for (option of sizeFilterOptions(); track option.value) {
+                <button type="button" class="filter-chip" [class.active]="isSizeSelected(option.value)"
+                    (click)="toggleSize(option.value)">
+                    <span class="chip-label">{{ option.label }}</span>
+                    <span class="chip-count">{{ option.count }}</span>
+                </button>
+                }
+            </div>
+        </div>
+
+        <!-- Filter: Price Range with Dual-Thumb Slider on the same scroll track -->
+        <div class="filter-group price-filter-group">
+            <div class="group-header">
+                <span class="group-title">Price Range</span>
+                <span class="price-range-badge">
+                    {{ formatPrice(minPrice()) }} — {{ formatPrice(maxPrice()) }}
+                </span>
+            </div>
+
+            <!-- 2 Toggles on the Same Scroll Track -->
+            <div class="same-track-slider-box">
+                <div class="dual-track-container">
+                    <div class="slider-track-bg"></div>
+                    <div class="slider-track-fill" [style.left.%]="minPercent()"
+                        [style.width.%]="maxPercent() - minPercent()"></div>
+                    <input type="range" class="dual-range-input range-min" [min]="minPriceLimit" [max]="maxPriceLimit"
+                        [step]="priceStep" [value]="minPrice()" (input)="onMinInput($event)"
+                        [style.z-index]="minPrice() >= maxPrice() - 200 ? 4 : 2" aria-label="Minimum price toggle" />
+                    <input type="range" class="dual-range-input range-max" [min]="minPriceLimit" [max]="maxPriceLimit"
+                        [step]="priceStep" [value]="maxPrice()" (input)="onMaxInput($event)" [style.z-index]="3"
+                        aria-label="Maximum price toggle" />
+                </div>
+
+                <div class="track-scale-labels">
+                    <span>€{{ minPriceLimit }}</span>
+                    <span class="track-live-range">{{ formatPrice(minPrice()) }} — {{ formatPrice(maxPrice()) }}</span>
+                    <span>€10k+</span>
+                </div>
+            </div>
+
+            <!-- Quick Presets -->
+            <div class="chip-group presets-line" role="group" aria-label="Filter by price presets">
+                @for (preset of pricePresets; track preset.label) {
+                <button type="button" class="filter-chip preset-chip"
+                    [class.active]="isPricePresetActive(preset.min, preset.max)"
+                    (click)="setPricePreset(preset.min, preset.max)">
+                    <span class="chip-label">{{ preset.label }}</span>
+                </button>
+                }
+            </div>
+        </div>
+    </aside>
+
+    <div class="collection">
+        <!-- Search and Sort Toolbar -->
+        <div class="catalogue-toolbar">
+            <div class="search-box">
+                <span class="search-icon" aria-hidden="true">⚲</span>
+                <input type="search" placeholder="Search by model, brand, style, calibre..." [ngModel]="searchQuery()"
+                    (ngModelChange)="searchQuery.set($event)" aria-label="Search watches" />
+                @if (searchQuery()) {
+                <button type="button" class="search-clear" (click)="searchQuery.set('')" aria-label="Clear search">
+                    ✕
+                </button>
+                }
+            </div>
+
+            <div class="toolbar-controls">
+                <label class="sort-control">
+                    <span class="sort-label">Sort by:</span>
+                    <select [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)" aria-label="Sort watches">
+                        <option value="featured">Featured / Curated</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="brand-asc">Brand: A to Z</option>
+                        <option value="size-asc">Diameter: Small to Large</option>
+                    </select>
+                </label>
+
+                <div class="collection-meta">
+                    <p>{{ filteredWatches().length }} of {{ watches.length }} timepieces</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Filter Tags -->
+        @if (activeFilters().length) {
+        <div class="active-filters-bar" aria-label="Active filters">
+            <span class="active-filters-label">Active filters:</span>
+            <div class="active-chips">
+                @for (filter of activeFilters(); track filter.id) {
+                <button type="button" class="active-chip" (click)="removeActiveFilter(filter)"
+                    [attr.aria-label]="'Remove filter ' + filter.label + ' ' + filter.value">
+                    <span class="chip-filter-label">{{ filter.label }}:</span>
+                    <span class="chip-filter-val">{{ filter.value }}</span>
+                    <span class="chip-close">×</span>
+                </button>
+                }
+            </div>
+            <button type="button" class="clear-all-text-btn" (click)="clearFilters()">
+                Clear all ({{ activeFilters().length }})
+            </button>
+        </div>
+        }
+
+        <!-- Watch Grid -->
+        @if (filteredWatches().length) {
+        <div class="watch-grid">
+            @for (watch of filteredWatches(); track watch.slug) {
+            <a class="watch-card" [routerLink]="['/watches', watch.slug]">
+                <div class="watch-art" [style.--face]="watch.face" [style.--strap]="watch.strap"
+                    [style.--tone]="watch.tone" aria-hidden="true">
+                    <span class="card-badge badge-size">Ø {{ watch.caseSize }}</span>
+                    <span class="card-badge badge-type">{{ watch.type }}</span>
+                    <span class="strap top"></span>
+                    <span class="strap bottom"></span>
+                    <span class="case"><span class="dial"><i></i><b></b><em></em></span></span>
+                </div>
+
+                <div class="watch-card-content">
+                    <div class="watch-card-header">
+                        <span class="brand">{{ watch.brand }}</span>
+                        <h2 class="watch-title">{{ watch.name }}</h2>
+                    </div>
+
+                    <p class="description">{{ watch.description }}</p>
+
+                    <!-- Structured Specs Bar -->
+                    <div class="specs-bar">
+                        <div class="spec-item">
+                            <span class="spec-key">Calibre</span>
+                            <span class="spec-value">{{ watch.movement }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-key">Diameter</span>
+                            <span class="spec-value">{{ watch.caseSize }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-key">Style</span>
+                            <span class="spec-value">{{ watch.type }}</span>
+                        </div>
+                    </div>
+
+                    <div class="watch-card-footer">
+                        <div class="price-block">
+                            <span class="price-label">Price</span>
+                            <span class="price-amount">{{ formatPrice(watch.price) }}</span>
+                        </div>
+                        <span class="cta-link">
+                            View details
+                            <span class="arrow" aria-hidden="true">↗</span>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            }
+        </div>
+        } @else {
+        <div class="empty-state">
+            <div class="empty-icon" aria-hidden="true">⌚</div>
+            <h3>No timepieces match your criteria</h3>
+            <p>Try adjusting your search terms, changing the price range, or clearing some active filters.</p>
+            <button type="button" class="reset-button" (click)="clearFilters()">
+                Reset all filters
+            </button>
+        </div>
+        }
+    </div>
+</section>
