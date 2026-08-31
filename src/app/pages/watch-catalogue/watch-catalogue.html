@@ -7,13 +7,14 @@
 </header>
 
 <section class="catalogue" aria-label="Watch catalogue">
-    <aside class="filters" aria-label="Filter watches">
+    <aside id="watch-filters" class="filters" [class.is-open]="filterPanelOpen()" aria-label="Filter watches">
         <div class="filter-heading">
             <span>Refine</span>
             @if (activeFilters().length) {
             <button type="button" class="clear-filters-btn" (click)="clearFilters()">Clear all ({{
                 activeFilters().length }})</button>
             }
+            <button type="button" class="mobile-filter-close" (click)="closeFilterPanel()" aria-label="Close filters">✕</button>
         </div>
 
         <!-- Filter: Style / Category -->
@@ -168,6 +169,12 @@
                 </button>
                 }
             </div>
+
+            <button type="button" class="mobile-filter-trigger" (click)="toggleFilterPanel()"
+                [attr.aria-expanded]="filterPanelOpen()" aria-controls="watch-filters">
+                <span aria-hidden="true">☷</span> Refine
+                @if (activeFilters().length) { <b>{{ activeFilters().length }}</b> }
+            </button>
 
             <div class="toolbar-controls">
                 <label class="sort-control">

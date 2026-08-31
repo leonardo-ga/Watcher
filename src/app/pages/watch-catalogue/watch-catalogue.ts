@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { WatchDataService } from '../../data/watch-data.service';
@@ -61,6 +61,20 @@ export class WatchCatalogue {
 
   // Sorting signal
   protected readonly sortBy = signal<SortOption>('featured');
+  protected readonly filterPanelOpen = signal(false);
+
+  @HostListener('window:keydown.escape')
+  protected closeFiltersOnEscape(): void {
+    this.filterPanelOpen.set(false);
+  }
+
+  protected toggleFilterPanel(): void {
+    this.filterPanelOpen.update((isOpen) => !isOpen);
+  }
+
+  protected closeFilterPanel(): void {
+    this.filterPanelOpen.set(false);
+  }
 
   // Size option definitions
   protected readonly sizeOptions = [

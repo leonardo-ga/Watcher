@@ -174,3 +174,22 @@ nav a.active {
         padding: .44rem .65rem;
     }
 }
+
+@media (max-width: 420px) {
+    .navigation {
+        padding: 0 .85rem;
+    }
+
+    .brand-name {
+        display: none;
+    }
+
+    nav {
+        gap: 0;
+    }
+
+    nav a {
+        font-size: .73rem;
+        padding: .44rem .5rem;
+    }
+}
