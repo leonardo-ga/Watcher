@@ -1,5 +1,8 @@
 :host {
     display: block;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .navigation {
@@ -12,7 +15,13 @@
     height: 82px;
     padding: 0 clamp(1.25rem, 4vw, 4.5rem);
     position: relative;
-    z-index: 10;
+    transition: transform .32s cubic-bezier(.2, .8, .2, 1), opacity .24s ease;
+}
+
+.navigation.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
 }
 
 .brand {
@@ -92,6 +101,7 @@ nav {
     display: flex;
     gap: .15rem;
     padding: .25rem;
+    position: relative;
 }
 
 nav a {
@@ -100,8 +110,24 @@ nav a {
     font-size: .92rem;
     letter-spacing: .01em;
     padding: .5rem .88rem;
+    position: relative;
     text-decoration: none;
-    transition: background .2s ease, box-shadow .2s ease, color .2s ease;
+    transition: color .2s ease;
+    z-index: 1;
+}
+
+.nav-pill {
+    background: #fdfcf9;
+    border-radius: 99px;
+    box-shadow: 0 1px 4px #4e4d4217;
+    bottom: .25rem;
+    left: .25rem;
+    pointer-events: none;
+    position: absolute;
+    top: .25rem;
+    transform: translateX(var(--active-pill-offset, 0));
+    transition: transform .32s cubic-bezier(.2, .8, .2, 1), width .32s cubic-bezier(.2, .8, .2, 1);
+    width: var(--active-pill-width, 0);
 }
 
 nav a:hover {
@@ -109,8 +135,6 @@ nav a:hover {
 }
 
 nav a.active {
-    background: #fdfcf9;
-    box-shadow: 0 1px 4px #4e4d4217;
     color: #22221f;
 }
 
@@ -120,6 +144,14 @@ nav a.active {
     font-size: .57rem;
     justify-self: end;
     letter-spacing: .12em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navigation,
+    .nav-pill,
+    nav a {
+        transition: none;
+    }
 }
 
 @media (max-width: 620px) {
