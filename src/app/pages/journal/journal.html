@@ -1,1 +1,79 @@
-<p>journal works!</p>
+<main class="journal">
+  <header class="journal-header">
+    <p class="eyebrow"><span></span> The Journal</p>
+    <div>
+      <h1>Good watches have<br /><em>better stories.</em></h1>
+      <p>Perspective, comparisons, and the small details that make a watch worth returning to.</p>
+    </div>
+  </header>
+
+  @if (featuredEntry(); as entry) {
+  @if (watchFor(entry.featuredWatchSlug); as watch) {
+  <section class="cover-story" [style.--entry-accent]="entry.accent" aria-labelledby="cover-title">
+    <div class="cover-image">
+      <img [src]="watch.image" [alt]="watch.imageAlt" fetchpriority="high" decoding="async" />
+      <span class="cover-index">Lead story / 01</span>
+    </div>
+    <div class="cover-copy">
+      <p class="entry-meta">{{ entry.kind }} <span></span> {{ entry.readTime }}</p>
+      <h2 id="cover-title">{{ entry.title }}</h2>
+      <p>{{ entry.deck }}</p>
+      <a [routerLink]="['/journal', entry.slug]">Read the story <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  }
+  }
+
+  <section class="comparison-section" aria-labelledby="comparison-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow"><span></span> Side by side</p>
+        <h2 id="comparison-title">The <em>comparisons.</em></h2>
+      </div>
+      <p>Two watches, one question: which one earns the place on your wrist?</p>
+    </div>
+
+    <div class="comparison-grid">
+      @for (entry of comparisons(); track entry.slug) {
+      <a class="comparison-card" [routerLink]="['/journal', entry.slug]" [style.--entry-accent]="entry.accent">
+        <div class="comparison-images">
+          @for (watch of comparisonWatches(entry); track watch.slug) {
+          <img [src]="watch.image" [alt]="watch.imageAlt" loading="lazy" decoding="async" />
+          }
+        </div>
+        <div class="comparison-copy">
+          <p>{{ entry.kind }} <span>·</span> {{ entry.readTime }}</p>
+          <h3>{{ entry.title }}</h3>
+          <span class="comparison-link">Read comparison <b aria-hidden="true">→</b></span>
+        </div>
+      </a>
+      }
+    </div>
+  </section>
+
+  <section class="story-section" aria-labelledby="stories-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow"><span></span> Time well observed</p>
+        <h2 id="stories-title">More to <em>read.</em></h2>
+      </div>
+    </div>
+
+    <div class="story-list">
+      @for (entry of stories(); track entry.slug; let index = $index) {
+      @if (watchFor(entry.featuredWatchSlug); as watch) {
+      <a class="story-row" [routerLink]="['/journal', entry.slug]">
+        <span class="story-number">0{{ index + 2 }}</span>
+        <div class="story-image"><img [src]="watch.image" [alt]="watch.imageAlt" loading="lazy" decoding="async" /></div>
+        <div class="story-copy">
+          <p>{{ entry.kind }} <span>·</span> {{ entry.date }}</p>
+          <h3>{{ entry.title }}</h3>
+          <span>{{ entry.deck }}</span>
+        </div>
+        <span class="story-arrow" aria-hidden="true">↗</span>
+      </a>
+      }
+      }
+    </div>
+  </section>
+</main>

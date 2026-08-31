@@ -1,0 +1,48 @@
+@if (entry(); as entry) {
+<main class="article" [style.--entry-accent]="entry.accent">
+  <header class="article-header">
+    <a routerLink="/journal" class="back-link"><span aria-hidden="true">←</span> Back to journal</a>
+    <p class="article-meta">{{ entry.kind }} <span></span> {{ entry.date }} <span></span> {{ entry.readTime }}</p>
+    <h1>{{ entry.title }}</h1>
+    <p class="article-deck">{{ entry.deck }}</p>
+  </header>
+
+  @if (featuredWatch(); as watch) {
+  <figure class="article-cover">
+    <img [src]="watch.image" [alt]="watch.imageAlt" fetchpriority="high" decoding="async" />
+    <figcaption>{{ watch.brand }} {{ watch.name }} · A Watcher editorial image</figcaption>
+  </figure>
+  }
+
+  <section class="article-body" aria-label="Article body">
+    <aside>
+      <span>Filed under</span>
+      @for (tag of entry.tags; track tag) { <a routerLink="/watches">{{ tag }}</a> }
+    </aside>
+    <div class="prose">
+      @for (paragraph of entry.body; track paragraph) { <p>{{ paragraph }}</p> }
+    </div>
+  </section>
+
+  @if (entry.kind === 'Comparison') {
+  <section class="comparison-detail" aria-labelledby="comparison-title">
+    <div>
+      <p class="eyebrow"><span></span> The short answer</p>
+      <h2 id="comparison-title">Two good answers,<br /><em>different questions.</em></h2>
+      <p>{{ entry.verdict }}</p>
+    </div>
+    <div class="comparison-table">
+      @for (watch of comparedWatches(); track watch.slug) {
+      <a [routerLink]="['/watches', watch.slug]" class="comparison-watch">
+        <img [src]="watch.image" [alt]="watch.imageAlt" loading="lazy" decoding="async" />
+        <div><p>{{ watch.brand }}</p><h3>{{ watch.name }}</h3></div>
+        <dl><div><dt>Case</dt><dd>{{ watch.caseSize }}</dd></div><div><dt>Movement</dt><dd>{{ watch.movement }}</dd></div><div><dt>Style</dt><dd>{{ watch.type }}</dd></div></dl>
+      </a>
+      }
+    </div>
+  </section>
+  }
+</main>
+} @else {
+<main class="article-missing"><p>Journal entry not found.</p><a routerLink="/journal">Return to journal</a></main>
+}
