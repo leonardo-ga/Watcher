@@ -3,3 +3,26 @@
 :root { background: #f7f6f2; color: #22221f; font-family: 'Manrope', Arial, sans-serif; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
+
+::view-transition-old(root) {
+  animation: page-exit 160ms ease-out both;
+}
+
+::view-transition-new(root) {
+  animation: page-enter 300ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes page-exit {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
