@@ -213,13 +213,12 @@
         <div class="watch-grid">
             @for (watch of filteredWatches(); track watch.slug) {
             <a class="watch-card" [routerLink]="['/watches', watch.slug]">
-                <div class="watch-art" [style.--face]="watch.face" [style.--strap]="watch.strap"
-                    [style.--tone]="watch.tone" aria-hidden="true">
+                <div class="watch-art" [style.--tone]="watch.tone">
+                    <img class="watch-image" [src]="watch.image" [alt]="watch.imageAlt" loading="lazy"
+                        decoding="async" />
+                    <span class="watch-image-sheen" aria-hidden="true"></span>
                     <span class="card-badge badge-size">Ø {{ watch.caseSize }}</span>
                     <span class="card-badge badge-type">{{ watch.type }}</span>
-                    <span class="strap top"></span>
-                    <span class="strap bottom"></span>
-                    <span class="case"><span class="dial"><i></i><b></b><em></em></span></span>
                 </div>
 
                 <div class="watch-card-content">

@@ -6,6 +6,8 @@ export interface Watch {
   caseSize: string;
   description: string;
   face: string;
+  image: string;
+  imageAlt: string;
   movement: Movement;
   name: string;
   price: number;
@@ -21,6 +23,8 @@ export const watches: Watch[] = [
     caseSize: '42 mm',
     description: 'The lunar chronograph, built for the long view.',
     face: '#f2f0e8',
+    image: 'images/watches/omega-speedmaster-moonwatch.png',
+    imageAlt: 'Editorial product photograph of a Speedmaster-inspired chronograph on a stone pedestal.',
     movement: 'Manual',
     name: 'Speedmaster Moonwatch',
     price: 8_600,
@@ -34,6 +38,8 @@ export const watches: Watch[] = [
     caseSize: '39 mm',
     description: 'A compact diver with serious underwater intent.',
     face: '#232b27',
+    image: 'images/watches/tudor-black-bay-58.png',
+    imageAlt: 'Editorial product photograph of a Black Bay 58-inspired diver watch with brown leather strap.',
     movement: 'Automatic',
     name: 'Black Bay 58',
     price: 4_490,
@@ -47,6 +53,8 @@ export const watches: Watch[] = [
     caseSize: '35.1 mm',
     description: 'The square that changed the shape of wristwear.',
     face: '#f5f2e8',
+    image: 'images/watches/cartier-santos-de-cartier.png',
+    imageAlt: 'Editorial product photograph of a Santos-inspired square steel watch on a pale stone plinth.',
     movement: 'Automatic',
     name: 'Santos de Cartier',
     price: 7_850,
@@ -60,6 +68,8 @@ export const watches: Watch[] = [
     caseSize: '40 mm',
     description: 'A study in function, proportion, and permanence.',
     face: '#1d2523',
+    image: 'images/watches/rolex-explorer.png',
+    imageAlt: 'Editorial product photograph of an Explorer-inspired steel field watch with black dial.',
     movement: 'Automatic',
     name: 'Explorer',
     price: 7_700,
@@ -73,6 +83,8 @@ export const watches: Watch[] = [
     caseSize: '40 mm',
     description: 'A blue dial with the texture of early-morning light.',
     face: '#426078',
+    image: 'images/watches/grand-seiko-heritage-sbgh273.png',
+    imageAlt: 'Editorial product photograph of a Grand Seiko-inspired dress watch with icy blue textured dial.',
     movement: 'Automatic',
     name: 'Heritage SBGH273',
     price: 7_200,
@@ -86,6 +98,8 @@ export const watches: Watch[] = [
     caseSize: '38 mm',
     description: 'A faithful field watch, pared back to the essential.',
     face: '#d6d2c4',
+    image: 'images/watches/hamilton-khaki-field-mechanical.png',
+    imageAlt: 'Editorial product photograph of a Khaki Field-inspired watch with olive canvas strap.',
     movement: 'Manual',
     name: 'Khaki Field Mechanical',
     price: 745,
@@ -99,6 +113,8 @@ export const watches: Watch[] = [
     caseSize: '42 mm',
     description: 'A travel companion that puts two time zones in focus.',
     face: '#1e2936',
+    image: 'images/watches/longines-spirit-zulu-time.png',
+    imageAlt: 'Editorial product photograph of a Zulu Time-inspired GMT watch with brown leather strap.',
     movement: 'Automatic',
     name: 'Zulu Time',
     price: 3_150,
@@ -112,6 +128,8 @@ export const watches: Watch[] = [
     caseSize: '40 mm',
     description: 'Seventies attitude with an easy everyday rhythm.',
     face: '#75a996',
+    image: 'images/watches/tissot-prx-powermatic-80.png',
+    imageAlt: 'Editorial product photograph of a PRX-inspired integrated steel sports watch with green dial.',
     movement: 'Automatic',
     name: 'PRX Powermatic 80',
     price: 775,
@@ -125,6 +143,8 @@ export const watches: Watch[] = [
     caseSize: '40.5 mm',
     description: 'A modern classic with a wave-textured blue dial.',
     face: '#274f6e',
+    image: 'images/watches/seiko-prospex-spb143.png',
+    imageAlt: 'Editorial product photograph of a Prospex-inspired diver watch with blue textured dial.',
     movement: 'Automatic',
     name: 'Prospex SPB143',
     price: 1_300,
