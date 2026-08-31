@@ -1,1 +1,109 @@
-<p>watch-detail works!</p>
+@if (watch(); as watch) {
+<main class="watch-detail" [style.--watch-tone]="watch.tone" [style.--watch-face]="watch.face">
+  <section class="detail-hero" aria-labelledby="watch-title">
+    <div class="detail-intro">
+      <a class="back-link" routerLink="/watches"><span aria-hidden="true">←</span> Back to collection</a>
+
+      <div class="title-block">
+        <p class="eyebrow"><span></span> {{ watch.brand }} / {{ watch.type }}</p>
+        <h1 id="watch-title">{{ watch.name }}</h1>
+        <p class="watch-summary">{{ watch.description }}</p>
+      </div>
+
+      <div class="hero-facts" aria-label="Key watch details">
+        <div><span>Case</span><strong>{{ watch.caseSize }}</strong></div>
+        <div><span>Movement</span><strong>{{ watch.movement }}</strong></div>
+        <div><span>Reference price</span><strong>{{ formatPrice(watch.price) }}</strong></div>
+      </div>
+    </div>
+
+    <div class="detail-visual">
+      <div class="image-frame">
+        <img [src]="watch.image" [alt]="watch.imageAlt" fetchpriority="high" decoding="async" />
+      </div>
+      <span class="image-count">01 / 01</span>
+      <span class="visual-caption">{{ watch.brand }} · {{ watch.name }}</span>
+      <span class="visual-orbit orbit-one" aria-hidden="true"></span>
+      <span class="visual-orbit orbit-two" aria-hidden="true"></span>
+    </div>
+  </section>
+
+  <section class="watch-reading" aria-labelledby="reading-title">
+    <div class="reading-label">
+      <p class="eyebrow"><span></span> The considered view</p>
+      <span>01—03</span>
+    </div>
+    <div class="reading-copy">
+      <h2 id="reading-title">{{ profile()?.eyebrow }}, <em>by design.</em></h2>
+      <p>{{ profile()?.longDescription }}</p>
+      <p>The {{ watch.name }} is a study in the small decisions that turn a useful object into one you keep reaching for.</p>
+    </div>
+  </section>
+
+  <section class="specification" aria-labelledby="specification-title">
+    <div class="section-heading">
+      <p class="eyebrow"><span></span> At a glance</p>
+      <h2 id="specification-title">The essential <em>details.</em></h2>
+    </div>
+
+    <dl class="spec-grid">
+      <div><dt>Brand</dt><dd>{{ watch.brand }}</dd></div>
+      <div><dt>Collection</dt><dd>{{ watch.name }}</dd></div>
+      <div><dt>Category</dt><dd>{{ watch.type }}</dd></div>
+      <div><dt>Case diameter</dt><dd>{{ watch.caseSize }}</dd></div>
+      <div><dt>Movement</dt><dd>{{ watch.movement }}</dd></div>
+      <div><dt>Reference price</dt><dd>{{ formatPrice(watch.price) }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="watch-notes" aria-labelledby="notes-title">
+    <div class="notes-heading">
+      <p class="eyebrow"><span></span> Why it stays</p>
+      <h2 id="notes-title">A watch for the <em>long view.</em></h2>
+    </div>
+
+    <div class="notes-grid">
+      @for (note of profile()?.notes ?? []; track note.label) {
+      <article class="note-card">
+        <span>{{ note.label }}</span>
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.copy }}</p>
+      </article>
+      }
+    </div>
+  </section>
+
+  <section class="related-watches" aria-labelledby="related-title">
+    <div class="section-heading related-heading">
+      <div>
+        <p class="eyebrow"><span></span> Keep looking</p>
+        <h2 id="related-title">More to <em>consider.</em></h2>
+      </div>
+      <a routerLink="/watches" class="collection-link">View collection <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="related-grid">
+      @for (relatedWatch of relatedWatches(); track relatedWatch.slug) {
+      <a class="related-card" [routerLink]="['/watches', relatedWatch.slug]" (click)="scrollToTop()"
+        [style.--card-tone]="relatedWatch.tone">
+        <div class="related-image">
+          <img [src]="relatedWatch.image" [alt]="relatedWatch.imageAlt" loading="lazy" decoding="async" />
+          <span>{{ relatedWatch.type }}</span>
+        </div>
+        <div class="related-copy">
+          <p>{{ relatedWatch.brand }}</p>
+          <h3>{{ relatedWatch.name }}</h3>
+          <strong>{{ formatPrice(relatedWatch.price) }}</strong>
+        </div>
+      </a>
+      }
+    </div>
+  </section>
+</main>
+} @else {
+<main class="not-found">
+  <p class="eyebrow"><span></span> Not in the collection</p>
+  <h1>This watch has moved <em>on.</em></h1>
+  <a routerLink="/watches">Return to the collection <span aria-hidden="true">→</span></a>
+</main>
+}
