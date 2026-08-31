@@ -20,6 +20,8 @@
               "base": "docs",
               "browser": ""
             },
+            "baseHref": "/Watcher/",
+            "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
