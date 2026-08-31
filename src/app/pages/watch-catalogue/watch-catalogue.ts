@@ -1,7 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Movement, watches, WatchType } from '../../data/watches';
+import { WatchDataService } from '../../data/watch-data.service';
+import { Movement, Watch, WatchType } from '../../data/watches';
 
 export type SortOption =
   | 'featured'
@@ -38,7 +39,11 @@ export interface PricePreset {
   styleUrl: './watch-catalogue.css',
 })
 export class WatchCatalogue {
-  protected readonly watches = watches;
+  private readonly watchData = inject(WatchDataService);
+
+  protected get watches(): readonly Watch[] {
+    return this.watchData.watches();
+  }
 
   // Filter signals
   protected readonly searchQuery = signal('');

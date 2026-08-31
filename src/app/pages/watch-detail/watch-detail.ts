@@ -1,7 +1,8 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { WatchType, watches } from '../../data/watches';
+import { WatchDataService } from '../../data/watch-data.service';
+import { WatchType } from '../../data/watches';
 
 interface WatchProfile {
   eyebrow: string;
@@ -74,6 +75,7 @@ const profiles: Record<WatchType, WatchProfile> = {
 })
 export class WatchDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly watchData = inject(WatchDataService);
   private readonly routeParams = toSignal(this.route.paramMap, { initialValue: this.route.snapshot.paramMap });
 
   ngOnInit(): void {
@@ -82,7 +84,7 @@ export class WatchDetail implements OnInit {
 
   protected readonly watch = computed(() => {
     const slug = this.routeParams().get('slug');
-    return watches.find((watch) => watch.slug === slug);
+    return this.watchData.watches().find((watch) => watch.slug === slug);
   });
 
   protected readonly profile = computed(() => {
@@ -94,7 +96,7 @@ export class WatchDetail implements OnInit {
     const currentWatch = this.watch();
     if (!currentWatch) return [];
 
-    return watches
+    return this.watchData.watches()
       .filter((watch) => watch.slug !== currentWatch.slug)
       .sort((a, b) => Number(b.type === currentWatch.type) - Number(a.type === currentWatch.type))
       .slice(0, 3);
