@@ -18,13 +18,25 @@
     </div>
 
     <div class="detail-visual">
+      @if (selectedImage(); as image) {
       <div class="image-frame">
-        <img [src]="watch.image" [alt]="watch.imageAlt" fetchpriority="high" decoding="async" />
+        <img [src]="image.src" [alt]="image.alt" fetchpriority="high" decoding="async" />
       </div>
-      <span class="image-count">01 / 01</span>
+      }
+      <span class="image-count">{{ selectedImageIndex() + 1 }} / {{ gallery().length }}</span>
       <span class="visual-caption">{{ watch.brand }} · {{ watch.name }}</span>
       <span class="visual-orbit orbit-one" aria-hidden="true"></span>
       <span class="visual-orbit orbit-two" aria-hidden="true"></span>
+      @if (gallery().length > 1) {
+      <div class="gallery-picker" aria-label="Watch image gallery">
+        @for (image of gallery(); track image.src; let index = $index) {
+        <button type="button" [class.active]="index === selectedImageIndex()" (click)="selectImage(index)"
+          [attr.aria-label]="'Show image ' + (index + 1) + ' of ' + watch.name">
+          <img [src]="image.src" [alt]="" />
+        </button>
+        }
+      </div>
+      }
     </div>
   </section>
 
@@ -53,8 +65,21 @@
       <div><dt>Case diameter</dt><dd>{{ watch.caseSize }}</dd></div>
       <div><dt>Movement</dt><dd>{{ watch.movement }}</dd></div>
       <div><dt>Reference price</dt><dd>{{ formatPrice(watch.price) }}</dd></div>
+      @if (watch.caseMaterial) { <div><dt>Case material</dt><dd>{{ watch.caseMaterial }}</dd></div> }
+      @if (watch.crystal) { <div><dt>Crystal</dt><dd>{{ watch.crystal }}</dd></div> }
+      @if (watch.waterResistance) { <div><dt>Water resistance</dt><dd>{{ watch.waterResistance }}</dd></div> }
+      @if (watch.powerReserve) { <div><dt>Power reserve</dt><dd>{{ watch.powerReserve }}</dd></div> }
+      @if (watch.reference) { <div><dt>Reference</dt><dd>{{ watch.reference }}</dd></div> }
     </dl>
   </section>
+
+  @if (watch.features?.length) {
+  <section class="watch-features" aria-labelledby="features-title">
+    <p class="eyebrow"><span></span> In the details</p>
+    <h2 id="features-title">What it brings to the <em>wrist.</em></h2>
+    <div>@for (feature of watch.features; track feature) { <span>{{ feature }}</span> }</div>
+  </section>
+  }
 
   <section class="watch-notes" aria-labelledby="notes-title">
     <div class="notes-heading">

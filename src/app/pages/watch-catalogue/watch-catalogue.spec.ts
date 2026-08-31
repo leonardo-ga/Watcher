@@ -1,5 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
+import { watches } from "../../data/watches";
 import { WatchCatalogue } from "./watch-catalogue";
 
 describe("WatchCatalogue", () => {
@@ -19,7 +20,7 @@ describe("WatchCatalogue", () => {
   it("should initialize with all watches and full price range", () => {
     const fixture = TestBed.createComponent(WatchCatalogue);
     const component = fixture.componentInstance as any;
-    expect(component.filteredWatches().length).toBe(9);
+    expect(component.filteredWatches().length).toBe(watches.length);
     expect(component.minPrice()).toBe(0);
     expect(component.maxPrice()).toBe(10000);
   });
@@ -51,7 +52,7 @@ describe("WatchCatalogue", () => {
 
     // Reset with 'All'
     component.toggleBrand("All");
-    expect(component.filteredWatches().length).toBe(9);
+    expect(component.filteredWatches().length).toBe(watches.length);
   });
 
   it("should support multi-select for styles / types", () => {
@@ -59,10 +60,12 @@ describe("WatchCatalogue", () => {
     const component = fixture.componentInstance as any;
 
     component.toggleType("Diver");
-    expect(component.filteredWatches().length).toBe(2);
+    expect(component.filteredWatches().length).toBe(watches.filter((watch) => watch.type === "Diver").length);
 
     component.toggleType("Chronograph");
-    expect(component.filteredWatches().length).toBe(3); // 2 divers + 1 chrono
+    expect(component.filteredWatches().length).toBe(
+      watches.filter((watch) => watch.type === "Diver" || watch.type === "Chronograph").length
+    );
   });
 
   it("should support multi-select for movements", () => {
@@ -70,10 +73,12 @@ describe("WatchCatalogue", () => {
     const component = fixture.componentInstance as any;
 
     component.toggleMovement("Manual");
-    expect(component.filteredWatches().length).toBe(2);
+    expect(component.filteredWatches().length).toBe(watches.filter((watch) => watch.movement === "Manual").length);
 
     component.toggleMovement("Automatic");
-    expect(component.filteredWatches().length).toBe(9); // 2 manual + 7 automatic
+    expect(component.filteredWatches().length).toBe(
+      watches.filter((watch) => watch.movement === "Manual" || watch.movement === "Automatic").length
+    );
   });
 
   it("should support multi-select for case size brackets", () => {
@@ -81,10 +86,14 @@ describe("WatchCatalogue", () => {
     const component = fixture.componentInstance as any;
 
     component.toggleSize("small");
-    expect(component.filteredWatches().length).toBe(2); // Santos 35.1mm, Khaki 38mm
+    expect(component.filteredWatches().length).toBe(
+      watches.filter((watch) => parseFloat(watch.caseSize) < 39).length
+    );
 
     component.toggleSize("large");
-    expect(component.filteredWatches().length).toBe(4); // + Omega 42mm, Zulu Time 42mm
+    expect(component.filteredWatches().length).toBe(
+      watches.filter((watch) => parseFloat(watch.caseSize) < 39 || parseFloat(watch.caseSize) > 40.5).length
+    );
   });
 
   it("should filter by custom price range", () => {
@@ -95,7 +104,7 @@ describe("WatchCatalogue", () => {
     component.updateMaxPrice(5000);
     const results = component.filteredWatches();
 
-    expect(results.length).toBe(3); // Tudor BB58 (4490), Zulu Time (3150), Seiko Prospex (1300)
+    expect(results.length).toBe(watches.filter((watch) => watch.price >= 1000 && watch.price <= 5000).length);
     for (const w of results) {
       expect(w.price).toBeGreaterThanOrEqual(1000);
       expect(w.price).toBeLessThanOrEqual(5000);
@@ -136,7 +145,7 @@ describe("WatchCatalogue", () => {
 
     component.setPricePreset(0, 1000);
     expect(component.isPricePresetActive(0, 1000)).toBe(true);
-    expect(component.filteredWatches().length).toBe(2); // Khaki (745), PRX (775)
+    expect(component.filteredWatches().length).toBe(watches.filter((watch) => watch.price <= 1000).length);
   });
 
   it("should sort watches by price ascending and descending", () => {
@@ -145,11 +154,11 @@ describe("WatchCatalogue", () => {
 
     component.sortBy.set("price-asc");
     const asc = component.filteredWatches();
-    expect(asc[0].price).toBe(745);
+    expect(asc[0].price).toBe(Math.min(...watches.map((watch) => watch.price)));
 
     component.sortBy.set("price-desc");
     const desc = component.filteredWatches();
-    expect(desc[0].price).toBe(8600);
+    expect(desc[0].price).toBe(Math.max(...watches.map((watch) => watch.price)));
   });
 
   it("should allow granular removal of active filters", () => {
@@ -182,7 +191,6 @@ describe("WatchCatalogue", () => {
     expect(component.selectedTypes().length).toBe(0);
     expect(component.minPrice()).toBe(0);
     expect(component.maxPrice()).toBe(10000);
-    expect(component.filteredWatches().length).toBe(9);
+    expect(component.filteredWatches().length).toBe(watches.length);
   });
 });
-

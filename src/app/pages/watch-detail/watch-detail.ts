@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { WatchDataService } from '../../data/watch-data.service';
@@ -77,6 +77,7 @@ export class WatchDetail implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly watchData = inject(WatchDataService);
   private readonly routeParams = toSignal(this.route.paramMap, { initialValue: this.route.snapshot.paramMap });
+  protected readonly selectedImageIndex = signal(0);
 
   ngOnInit(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -90,6 +91,18 @@ export class WatchDetail implements OnInit {
   protected readonly profile = computed(() => {
     const watch = this.watch();
     return watch ? profiles[watch.type] : undefined;
+  });
+
+  protected readonly gallery = computed(() => {
+    const watch = this.watch();
+    return watch ? [{ src: watch.image, alt: watch.imageAlt }, ...(watch.gallery ?? [])] : [];
+  });
+
+  protected readonly selectedImage = computed(() => this.gallery()[this.selectedImageIndex()]);
+
+  private readonly resetGalleryOnWatchChange = effect(() => {
+    this.watch()?.slug;
+    this.selectedImageIndex.set(0);
   });
 
   protected readonly relatedWatches = computed(() => {
@@ -108,5 +121,9 @@ export class WatchDetail implements OnInit {
 
   protected scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  protected selectImage(index: number): void {
+    this.selectedImageIndex.set(index);
   }
 }

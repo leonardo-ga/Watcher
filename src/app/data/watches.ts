@@ -3,35 +3,51 @@ export type Movement = 'Automatic' | 'Manual' | 'Quartz';
 
 export interface Watch {
   brand: string;
+  caseMaterial?: string;
   caseSize: string;
+  crystal?: string;
   description: string;
   face: string;
+  features?: readonly string[];
+  gallery?: readonly { alt: string; src: string }[];
   image: string;
   imageAlt: string;
   movement: Movement;
   name: string;
+  powerReserve?: string;
   price: number;
+  reference?: string;
   slug: string;
   strap: string;
   tone: string;
   type: WatchType;
+  waterResistance?: string;
 }
 
 export const watches: Watch[] = [
   {
     brand: 'Omega',
+    caseMaterial: 'Stainless steel',
     caseSize: '42 mm',
     description: 'The lunar chronograph, built for the long view.',
     face: '#f2f0e8',
+    features: ['Tachymeter scale', 'Chronograph', 'Hesalite-style crystal'],
+    gallery: [{
+      alt: 'Close editorial product photograph of a Speedmaster-inspired chronograph on a graphite surface.',
+      src: 'images/watches/omega-speedmaster-moonwatch-detail.png',
+    }],
     image: 'images/watches/omega-speedmaster-moonwatch.png',
     imageAlt: 'Editorial product photograph of a Speedmaster-inspired chronograph on a stone pedestal.',
     movement: 'Manual',
     name: 'Speedmaster Moonwatch',
+    powerReserve: '50 hours',
     price: 8_600,
+    reference: '310.30.42.50.01.002',
     slug: 'omega-speedmaster-moonwatch',
     strap: '#272724',
     tone: '#b6b3a7',
     type: 'Chronograph',
+    waterResistance: '50 m',
   },
   {
     brand: 'Tudor',
@@ -152,5 +168,68 @@ export const watches: Watch[] = [
     strap: '#a9aba8',
     tone: '#b8b8af',
     type: 'Diver',
+  },
+  {
+    brand: 'Nomos',
+    caseMaterial: 'Stainless steel',
+    caseSize: '36 mm',
+    crystal: 'Sapphire crystal',
+    description: 'A compact field watch with graphic restraint and a flash of orange.',
+    face: '#ece7d7',
+    features: ['Small seconds', 'Hand-wound calibre', 'Nylon textile strap'],
+    image: 'images/watches/nomos-club-campus.png',
+    imageAlt: 'Editorial product photograph of a minimalist cream dial field watch on a warm studio plinth.',
+    movement: 'Manual',
+    name: 'Club Campus',
+    powerReserve: '43 hours',
+    price: 1_650,
+    reference: '708',
+    slug: 'nomos-club-campus',
+    strap: '#343436',
+    tone: '#d8d0bd',
+    type: 'Field',
+    waterResistance: '100 m',
+  },
+  {
+    brand: 'Sinn',
+    caseMaterial: 'Bead-blasted stainless steel',
+    caseSize: '41 mm',
+    crystal: 'Sapphire crystal',
+    description: 'An aviation-minded GMT for those who prefer their travel watches direct.',
+    face: '#172434',
+    features: ['Second time zone', 'Arabic numerals', 'Leather strap'],
+    image: 'images/watches/sinn-556a-gmt.png',
+    imageAlt: 'Editorial product photograph of a navy dial aviation-inspired GMT watch on a dark stone block.',
+    movement: 'Automatic',
+    name: '556 A GMT',
+    powerReserve: '42 hours',
+    price: 2_190,
+    reference: '556.010',
+    slug: 'sinn-556a-gmt',
+    strap: '#704f35',
+    tone: '#8797a4',
+    type: 'GMT',
+    waterResistance: '200 m',
+  },
+  {
+    brand: 'Seiko',
+    caseMaterial: 'Stainless steel',
+    caseSize: '42.5 mm',
+    crystal: 'Hardlex mineral crystal',
+    description: 'A colour-forward diver that brings warmth to the tool-watch formula.',
+    face: '#6e2028',
+    features: ['Day-date display', 'Unidirectional bezel', 'Rubber strap'],
+    image: 'images/watches/seiko-5-sports-srpd69.png',
+    imageAlt: 'Editorial product photograph of a burgundy dial dive watch on a wine-red studio backdrop.',
+    movement: 'Automatic',
+    name: '5 Sports SRPD69',
+    powerReserve: '41 hours',
+    price: 340,
+    reference: 'SRPD69K1',
+    slug: 'seiko-5-sports-srpd69',
+    strap: '#1e1e1d',
+    tone: '#9b6765',
+    type: 'Diver',
+    waterResistance: '100 m',
   },
 ];
